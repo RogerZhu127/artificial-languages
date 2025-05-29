@@ -45,7 +45,7 @@ parser.add_argument("-ts", "--test", type=float, default=0.1,
     help="Test proportion")
 parser.add_argument("-dv", "--dev", type=float, default=0.1, 
     help="Dev proportion")
-parser.add_argument("-n", "--num_splits", type=int, default=10, 
+parser.add_argument("-n", "--num_splits", type=int, default=5, 
     help="Number of splits")
 
 args = parser.parse_args()
