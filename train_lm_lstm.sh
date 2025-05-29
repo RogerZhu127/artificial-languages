@@ -20,7 +20,7 @@ mkdir -p "sentence_scores_lstm"
 
 fairseq-preprocess --only-source --trainpref "data_gen/permuted_splits/${GRAMMAR}/${SPLIT}.trn" --validpref "data_gen/permuted_splits/${GRAMMAR}/${SPLIT}.dev" --testpref "data_gen/permuted_splits/${GRAMMAR}/${SPLIT}.tst" --destdir "data-bin/${GRAMMAR}/${SPLIT}-dataset" --workers 20
 
-fairseq-train --task language_modeling "/data-bin/${GRAMMAR}/${SPLIT}-dataset" \
+fairseq-train --task language_modeling "data-bin/${GRAMMAR}/${SPLIT}-dataset" \
     --save-dir "checkpoints/${GRAMMAR}/${SPLIT}-lstm" \
     --arch lstm_lm \
     --decoder-embed-dim 128 \
