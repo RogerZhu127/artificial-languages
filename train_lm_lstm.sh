@@ -13,15 +13,15 @@
 GRAMMAR=$1
 SPLIT=$2
 
-mkdir -p "data-bin/${GRAMMAR}/${SPLIT}-dataset"
-mkdir -p "checkpoints/${GRAMMAR}/${SPLIT}-lstm"
-mkdir -p "lstm-results"
-mkdir -p "sentence_scores_lstm"
+mkdir -p "results/data-bin/${GRAMMAR}/${SPLIT}-dataset"
+mkdir -p "results/checkpoints/${GRAMMAR}/${SPLIT}-lstm"
+mkdir -p "results/lstm-results"
+mkdir -p "results/sentence_scores_lstm"
 
-fairseq-preprocess --only-source --trainpref "data_gen/permuted_splits/${GRAMMAR}/${SPLIT}.trn" --validpref "data_gen/permuted_splits/${GRAMMAR}/${SPLIT}.dev" --testpref "data_gen/permuted_splits/${GRAMMAR}/${SPLIT}.tst" --destdir "data-bin/${GRAMMAR}/${SPLIT}-dataset" --workers 20
+fairseq-preprocess --only-source --trainpref "data_gen/permuted_splits/${GRAMMAR}/${SPLIT}.trn" --validpref "data_gen/permuted_splits/${GRAMMAR}/${SPLIT}.dev" --testpref "data_gen/permuted_splits/${GRAMMAR}/${SPLIT}.tst" --destdir "results/data-bin/${GRAMMAR}/${SPLIT}-dataset" --workers 20
 
-fairseq-train --task language_modeling "data-bin/${GRAMMAR}/${SPLIT}-dataset" \
-    --save-dir "checkpoints/${GRAMMAR}/${SPLIT}-lstm" \
+fairseq-train --task language_modeling "results/data-bin/${GRAMMAR}/${SPLIT}-dataset" \
+    --save-dir "results/checkpoints/${GRAMMAR}/${SPLIT}-lstm" \
     --arch lstm_lm \
     --decoder-embed-dim 128 \
     --decoder-hidden-size 512 \
@@ -49,8 +49,8 @@ fairseq-train --task language_modeling "data-bin/${GRAMMAR}/${SPLIT}-dataset" \
     --reset-optimizer
 
 
-fairseq-eval-lm "data-bin/${GRAMMAR}/${SPLIT}-dataset" --path "checkpoints/${GRAMMAR}/${SPLIT}-lstm/checkpoint_best.pt" --tokens-per-sample 128 --gen-subset "valid" --output-word-probs --quiet 2> "lstm-results/${GRAMMAR}.${SPLIT}.dev.txt"
+fairseq-eval-lm "results/data-bin/${GRAMMAR}/${SPLIT}-dataset" --path "results/checkpoints/${GRAMMAR}/${SPLIT}-lstm/checkpoint_best.pt" --tokens-per-sample 128 --gen-subset "valid" --output-word-probs --quiet 2> "results/lstm-results/${GRAMMAR}.${SPLIT}.dev.txt"
 
-fairseq-eval-lm "data-bin/${GRAMMAR}/${SPLIT}-dataset" --path "checkpoints/${GRAMMAR}/${SPLIT}-lstm/checkpoint_best.pt" --tokens-per-sample 128 --gen-subset "test" --output-word-probs --quiet 2> "lstm-results/${GRAMMAR}.${SPLIT}.test.txt"
+fairseq-eval-lm "results/data-bin/${GRAMMAR}/${SPLIT}-dataset" --path "results/checkpoints/${GRAMMAR}/${SPLIT}-lstm/checkpoint_best.pt" --tokens-per-sample 128 --gen-subset "test" --output-word-probs --quiet 2> "results/lstm-results/${GRAMMAR}.${SPLIT}.test.txt"
 
-python get_sentence_scores.py -i "lstm-results/${GRAMMAR}.${SPLIT}.test.txt" -O "sentence_scores_lstm/"
+python get_sentence_scores.py -i "results/lstm-results/${GRAMMAR}.${SPLIT}.test.txt" -O "results/sentence_scores_lstm/"
