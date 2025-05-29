@@ -23,6 +23,7 @@ fairseq-preprocess --only-source --trainpref "data_gen/permuted_splits/${GRAMMAR
 fairseq-train --task language_modeling "results/data-bin/${GRAMMAR}/${SPLIT}-dataset" \
     --save-dir "results/checkpoints/${GRAMMAR}/${SPLIT}-lstm" \
     --arch lstm_lm \
+    --decoder-layers 2 \
     --decoder-embed-dim 128 \
     --decoder-hidden-size 512 \
     --decoder-out-embed-dim 128 \
