@@ -16,8 +16,8 @@ for i in range(2 ** args.num_choices):
     grammar = format(i, '0' + str(args.num_choices) + 'b')[::-1]
     for j in range(args.num_splits):
         subprocess.call(args.submission_command 
-            + " train_lm_transformer.sh " 
+            + " ./train_lm_transformer.sh " 
             + ' '.join([str(grammar), str(j)]), shell=True)
         subprocess.call(args.submission_command 
-            + " train_lm_lstm.sh " 
+            + " ./train_lm_lstm.sh " 
             + ' '.join([str(grammar), str(j)]), shell=True)
