@@ -48,6 +48,7 @@ fairseq-train --task language_modeling "data-bin/${GRAMMAR}/${SPLIT}-dataset" \
     --max-epoch 10 \
     --fp16 \
     --reset-optimizer
+ 
 
 fairseq-eval-lm "data-bin/${GRAMMAR}/${SPLIT}-dataset" --path "checkpoints/${GRAMMAR}/${SPLIT}-transformer/checkpoint_best.pt" --tokens-per-sample 128 --gen-subset "valid" --output-word-probs --quiet 2> "trans-results/${GRAMMAR}.${SPLIT}.dev.txt"
 
